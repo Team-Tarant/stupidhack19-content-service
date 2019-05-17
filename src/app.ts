@@ -10,7 +10,7 @@ const app = express()
 app.get('/api/getContent', (req, res) => {
   getLatestThreads()
     .then(content => {
-      res.json({result: content})
+      res.json(content)
     })
 })
 

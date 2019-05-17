@@ -3,11 +3,13 @@ import * as cheerio from 'cheerio'
 import { translateString } from './translateService'
 
 export const getLatestThreads = async () => {
-  const randN = Math.floor(Math.random() * 30)
-  const { data } = await axios.get(`https://keskustelu.suomi24.fi/?page=${randN}`)
+  const randN = Math.floor(Math.random() * 100000)
+  const { data } = await axios.get(`https://keskustelu.suomi24.fi/t/${randN}`)
   const dom = cheerio.load(data)
-  const res = dom('.thread-list-item-title').toArray().map(elem => elem.childNodes[0].nodeValue)
-  const finalString = res.join(' ')
+  const res = dom('.thread-text.post-text').first().text()
 
-  return translateString(finalString)
+  return {
+    threadId: randN,
+    text: await translateString(res.trim())
+  }
 }
