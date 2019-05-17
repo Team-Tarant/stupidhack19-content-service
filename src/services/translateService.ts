@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { text } from 'body-parser';
 
 function createUrl(textToTranslate: string) {
@@ -10,6 +10,9 @@ export const translateString = (string: string) =>
     .get(createUrl(string))
     .then(({data}) => data)
     .then(parseResult)
+    .catch((e: AxiosError) => {
+      console.error('translator', e.response ? e.response.status + ' ' + e.response.data : '')
+    })
 
 function parseResult({text}: any) {
   return text[0]
