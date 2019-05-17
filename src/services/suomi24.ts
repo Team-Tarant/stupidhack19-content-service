@@ -7,9 +7,7 @@ export const getLatestThreads = async () => {
   const { data } = await axios.get(`https://keskustelu.suomi24.fi/?page=${randN}`)
   const dom = cheerio.load(data)
   const res = dom('.thread-list-item-title').toArray().map(elem => elem.childNodes[0].nodeValue)
-  const promises = res
-    .filter(text => text.endsWith('?') || text.endsWith('!'))
-    .map(text => translateString(text))
+  const finalString = res.join(' ')
 
-  return Promise.all(promises)
+  return translateString(finalString)
 }
