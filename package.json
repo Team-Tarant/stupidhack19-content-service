@@ -15,7 +15,7 @@
     "express": "^4.17.0"
   },
   "scripts": {
-    "start": "tsc && node ./dist/app.js",
+    "start": "node ./dist/app.js",
     "build": "tsc",
     "postinstall": "yarn global add typescript && npm run build"
   }
