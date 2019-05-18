@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { translateString } from './translateService'
 
 const slugQuery = `
@@ -35,13 +35,18 @@ const getThreadBody = (slug: string): Promise<string> => axios
   .then(res => res.data.thread.body.plain)
 
 export async function getThread() {
-  const slugs = await getSlugs()
-  const randomSlug = slugs[Math.floor(Math.random() * slugs.length)]
-  const threadBody = await getThreadBody(randomSlug)
-  const translated = await translateString(threadBody)
+  try {
+    const slugs = await getSlugs()
+    const randomSlug = slugs[Math.floor(Math.random() * slugs.length)]
+    const threadBody = await getThreadBody(randomSlug)
+    const translated = await translateString(threadBody)
 
-  return {
-    threadId: randomSlug,
-    text: translated
+    return {
+      threadId: randomSlug,
+      text: translated
+    }
+  } catch (e) {
+    console.error('demi service', e.message)
+    return null
   }
 }

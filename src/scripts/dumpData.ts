@@ -1,4 +1,4 @@
-import { getLatestThreads } from '../services/suomi24'
+import { getLatestThreads } from '../services/suomi24Service'
 import { writeFileSync } from 'fs'
 
 const results = []
