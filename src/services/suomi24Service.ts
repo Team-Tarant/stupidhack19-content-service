@@ -26,7 +26,7 @@ export const getThread = async () => {
     const res = dom('.thread-text.post-text').first().text()
     return {
       threadId: data.randN,
-      text: await translateString(res.trim())
+      text: await translateString(res.trim().replace('\n', ''))
     }
   } catch (e) {
     if (e.response) {
