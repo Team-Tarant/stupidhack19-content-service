@@ -2,7 +2,7 @@ import axios from 'axios'
 import * as cheerio from 'cheerio'
 import { translateString } from './translateService'
 
-export const getLatestThreads = async () => {
+export const getThread = async () => {
   const randN = Math.floor(Math.random() * 100000)
 
   try {

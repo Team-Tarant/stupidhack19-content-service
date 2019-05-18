@@ -3,8 +3,8 @@ dotenv.config()
 import * as express from 'express'
 import { AxiosError } from 'axios'
 
-import { getLatestThreads } from './services/suomi24Service'
-import { getThread } from './services/demiService'
+import { getThread as getSuomi24Thread } from './services/suomi24Service'
+import { getThread as getDemiThread } from './services/demiService'
 
 const app = express()
 
@@ -20,7 +20,7 @@ app.get('/api/getContent', (_, res) => {
 
 function getRandThread(): Promise<{threadId: any, text: string}> {
   const rand = Math.random()
-  return rand >= 0.5 ? getLatestThreads() : getThread()
+  return rand >= 0.5 ? getSuomi24Thread() : getDemiThread()
 }
 
 app.listen(process.env.PORT, () => console.log('Listening on', process.env.PORT))
