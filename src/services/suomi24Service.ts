@@ -1,19 +1,37 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import * as cheerio from 'cheerio'
 import { translateString } from './translateService'
 
-export const getThread = async () => {
+const fetchThread = async () => {
   const randN = Math.floor(Math.random() * 100000)
-
   try {
     const { data } = await axios.get(`https://keskustelu.suomi24.fi/t/${randN}`)
-    const dom = cheerio.load(data)
+    return {
+      text: data,
+      randN
+    }
+  } catch (e) {
+    console.log('suomi24Service::fetchThread', 'Refetching thread')
+    return null
+  }
+}
+
+export const getThread = async () => {
+  try {
+    let data = null
+    while (data === null) {
+      data = await fetchThread()
+    }
+    const dom = cheerio.load(data.text)
     const res = dom('.thread-text.post-text').first().text()
     return {
-      threadId: randN,
+      threadId: data.randN,
       text: await translateString(res.trim())
     }
   } catch (e) {
+    if (e.response) {
+      const { response }: AxiosError = e
+    }
     console.log('error')
     return null
   }
