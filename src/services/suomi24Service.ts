@@ -17,22 +17,14 @@ const fetchThread = async () => {
 }
 
 export const getThread = async () => {
-  try {
-    let data = null
-    while (data === null) {
-      data = await fetchThread()
-    }
-    const dom = cheerio.load(data.text)
-    const res = dom('.thread-text.post-text').first().text()
-    return {
-      threadId: data.randN,
-      text: await translateString(res.trim().replace('\n', ''))
-    }
-  } catch (e) {
-    if (e.response) {
-      const { response }: AxiosError = e
-    }
-    console.log('error')
-    return null
+  let data = null
+  while (data === null) {
+    data = await fetchThread()
+  }
+  const dom = cheerio.load(data.text)
+  const res = dom('.thread-text.post-text').first().text()
+  return {
+    threadId: data.randN,
+    text: await translateString(res.trim().replace(/[\n\r]/g, ''))
   }
 }
