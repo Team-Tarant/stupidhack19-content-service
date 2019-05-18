@@ -1,4 +1,4 @@
-import { getLatestThreads } from '../services/suomi24Service'
+import { getThread } from '../services/suomi24Service'
 import { writeFileSync } from 'fs'
 
 const results = []
@@ -10,5 +10,5 @@ console.log(final)
 writeFileSync('./dump', final)
 
 async function request() {
-  results.push(await getLatestThreads())
+  results.push(await getThread())
 }
